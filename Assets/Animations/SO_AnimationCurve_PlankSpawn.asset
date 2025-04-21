@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d1b03d2485a8544b29e9007271342c, type: 3}
+  m_Name: SO_AnimationCurve_PlankSpawn
+  m_EditorClassIdentifier: 
+  animCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 0.021554412
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.6360701
+    - serializedVersion: 3
+      time: 0.84721047
+      value: 1.0262444
+      inSlope: 2.7241232
+      outSlope: 3.01966
+      tangentMode: 1
+      weightedMode: 0
+      inWeight: 0.046833016
+      outWeight: 0.23599006
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: -0.03665914
+      outSlope: 1.8747247
+      tangentMode: 1
+      weightedMode: 3
+      inWeight: 0.5471664
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
