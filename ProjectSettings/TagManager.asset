@@ -6,6 +6,8 @@ TagManager:
   tags:
   - 3Tile
   - 4Tile
+  - MainCanvas
+  - CursorCanvas
   layers:
   - Default
   - TransparentFX
