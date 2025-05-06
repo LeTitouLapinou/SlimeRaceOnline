@@ -2,5 +2,5 @@ using UnityEngine;
 
 public interface IClickable
 {
-    void Interact();
+    void OnClick();
 }

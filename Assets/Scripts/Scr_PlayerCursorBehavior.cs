@@ -7,7 +7,7 @@ public class Scr_PlayerCursorBehavior : NetworkBehaviour
     [SerializeField] private RectTransform cursorRectTransform;
 
     private Image cursorImage;
-    private Scr_HoverableItem currentlyHovered;
+    private IHoverable currentlyHovered;
 
     private NetworkVariable<Vector2> cursorPosition = new NetworkVariable<Vector2>(writePerm: NetworkVariableWritePermission.Owner);
     private NetworkVariable<Color> cursorColor = new NetworkVariable<Color>(writePerm: NetworkVariableWritePermission.Owner);
@@ -56,7 +56,10 @@ public class Scr_PlayerCursorBehavior : NetworkBehaviour
     {
         if (IsOwner)
         {
-            cursorPosition.Value = Input.mousePosition;
+            //Normalize mouse position in screen 
+            Vector2 mousePos = Input.mousePosition;
+            Vector2 screenSize = new Vector2(Screen.width, Screen.height);
+            cursorPosition.Value = new Vector2(mousePos.x / screenSize.x, mousePos.y / screenSize.y);
 
 
             //Raycast
@@ -64,8 +67,10 @@ public class Scr_PlayerCursorBehavior : NetworkBehaviour
 
             if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                
-                Scr_HoverableItem hoverable = hit.collider.GetComponentInParent<Scr_HoverableItem>();
+
+                var parent = hit.collider.transform.parent;
+
+                IHoverable hoverable = parent.GetComponentInChildren<IHoverable>();
 
                 if (hoverable != null)
                 {
@@ -82,6 +87,12 @@ public class Scr_PlayerCursorBehavior : NetworkBehaviour
                     currentlyHovered?.OnHoverExit();
                     currentlyHovered = null;
                 }
+
+                if (Input.GetMouseButtonDown(0)) // Left click
+                {
+                    var clickable = parent.GetComponentInChildren<IClickable>();
+                    clickable?.OnClick(); 
+                }
             }
             else
             {
@@ -90,16 +101,24 @@ public class Scr_PlayerCursorBehavior : NetworkBehaviour
                 currentlyHovered = null;
             }
 
-            if (Input.GetMouseButtonDown(0)) // Left click
-            {
-                currentlyHovered?.OnClick(); // Custom method on your hoverable items
-            }
+            
         }
 
         //Sync for all clients
-        cursorRectTransform.position = cursorPosition.Value;
+        if (cursorRectTransform != null && cursorRectTransform.parent is RectTransform parentRect)
+        {
+            Vector2 size = parentRect.rect.size;
 
-       
+            // Adjust for pivot
+            Vector2 anchoredPos = new Vector2(
+                (cursorPosition.Value.x * size.x) - (size.x * cursorRectTransform.pivot.x),
+                (cursorPosition.Value.y * size.y) - (size.y * cursorRectTransform.pivot.y)
+            );
+
+            cursorRectTransform.anchoredPosition = anchoredPos;
+        }
+
+
 
     }
 }

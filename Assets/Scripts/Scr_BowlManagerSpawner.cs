@@ -19,16 +19,23 @@ public class Scr_BowlManagerSpawner : MonoBehaviour
     void LayoutBowls()
     {
         var tempColorList = new List<Color>(listOfColors.colors); //On recupere la liste des couleurs du ScriptableObject ListOfColors
-
-
         Vector3 startPosition = transform.position;
+
+
         for (int i = 0; i < buttonCount; i++)
         {
             GameObject bowl = Instantiate(bowlPrefab, transform);
             bowl.transform.position = startPosition + new Vector3(0, 0 , i * spacing);
-            bowl.GetComponent<Scr_BowlBehaviour>().bowlColor = tempColorList[i];
             bowl.name = "Bowl_" + i; //Name the button
 
+            var bowlBehaviour = bowl.GetComponent<Scr_BowlBehaviour>();
+            bowlBehaviour.bowlColor = tempColorList[i];
+
+            Renderer renderer = bowl.GetComponentInChildren<Renderer>();
+            Material uniqueMat = new Material(renderer.material); //make a copy
+            bowlBehaviour.SetMaterial(uniqueMat); //assign to script
+
+            
         }
     }
 }
